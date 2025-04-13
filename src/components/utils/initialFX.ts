@@ -1,5 +1,5 @@
-import { SplitText } from "@gsap/member/SplitText";
-import gsap from "@gsap/member";
+import { SplitText } from "gsap/SplitText";
+import gsap from "gsap";
 import { smoother } from "../Navbar";
 
 // Register SplitText plugin

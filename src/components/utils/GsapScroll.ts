@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import gsap from "@gsap/member";
-import { ScrollTrigger } from "@gsap/member/ScrollTrigger";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);

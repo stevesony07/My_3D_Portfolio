@@ -1,4 +1,4 @@
-import { gsap } from "@gsap/member";
+import { gsap } from "gsap";
 // Import our custom ExtendedGSAPConfig interface
 import { ExtendedGSAPConfig } from "./types/gsap-types";
 

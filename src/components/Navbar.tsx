@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import HoverLinks from "./HoverLinks";
-import { gsap } from "@gsap/member";
+import { gsap } from "gsap";
 import "./styles/Navbar.css";
 import { ScrollSmootherInstance, ScrollSmootherStatic, ExtendedGSAPConfig } from "../types/gsap-types";
 
@@ -43,8 +43,8 @@ const initGSAP = () => {
 
     // Import the plugins dynamically
     Promise.all([
-      import("@gsap/member/ScrollTrigger"),
-      import("@gsap/member/ScrollSmoother")
+      import("gsap/ScrollTrigger"),
+      import("gsap/ScrollSmoother")
     ]).then(([triggerModule, smootherModule]) => {
       ScrollTrigger = triggerModule.ScrollTrigger;
       ScrollSmoother = smootherModule.ScrollSmoother as ScrollSmootherStatic;

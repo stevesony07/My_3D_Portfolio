@@ -1,5 +1,5 @@
 // Type definitions for GSAP plugins
-import { gsap } from '@gsap/member';
+import { gsap } from 'gsap';
 
 // Instead of trying to augment the module, we'll create our own interface
 export interface ExtendedGSAPConfig {
