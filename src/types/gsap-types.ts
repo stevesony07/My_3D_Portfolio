@@ -2,7 +2,7 @@
 import { gsap } from 'gsap';
 
 // Extend the GSAPConfig interface to include trialWarn
-declare module 'gsap' {
+declare module 'gsap/index' {
   interface GSAPConfig {
     trialWarn?: boolean;
   }

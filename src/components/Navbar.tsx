@@ -12,14 +12,19 @@ let ScrollSmoother: ScrollSmootherStatic;
 const initGSAP = () => {
   // Check if we're in a browser environment
   if (typeof window !== 'undefined' && import.meta.env.VITE_GSAP_TOKEN) {
-    // Configure GSAP
-    gsap.config({
+    // Configure GSAP with basic settings
+    const config: any = {
       autoSleep: 60,
       force3D: true,
       nullTargetWarn: false,
-      trialWarn: false, // This is now properly typed
       units: { left: "%", top: "%", rotation: "rad" }
-    });
+    };
+
+    // Add trialWarn property separately to avoid TypeScript errors
+    config.trialWarn = false;
+
+    // Apply the configuration
+    gsap.config(config);
 
     // Custom registerPlugin function
     const originalRegisterPlugin = gsap.registerPlugin;
@@ -63,6 +68,10 @@ export let smoother: ScrollSmootherInstance;
 
 const Navbar = () => {
   useEffect(() => {
+    // Store event handlers for cleanup
+    const clickHandlers = new Map<HTMLElement, EventListener>();
+    let resizeHandler: EventListener | null = null;
+
     // Wait for ScrollSmoother to be loaded
     const initScrollSmoother = async () => {
       // Make sure we're in a browser and have the token
@@ -99,7 +108,7 @@ const Navbar = () => {
             const links = document.querySelectorAll(".header ul a");
             links.forEach((elem) => {
               const element = elem as HTMLAnchorElement;
-              const clickHandler = (e: MouseEvent) => {
+              const handler = ((e: MouseEvent) => {
                 if (window.innerWidth > 1024) {
                   e.preventDefault();
                   const target = e.currentTarget as HTMLAnchorElement;
@@ -108,28 +117,21 @@ const Navbar = () => {
                     smoother.scrollTo(section, true, "top top");
                   }
                 }
-              };
+              }) as EventListener;
 
-              element.addEventListener("click", clickHandler as EventListener);
+              // Store the handler for cleanup
+              clickHandlers.set(element, handler);
+              element.addEventListener("click", handler);
             });
 
             // Set up resize handler
-            const resizeHandler = () => {
+            resizeHandler = (() => {
               if (ScrollSmoother && typeof ScrollSmoother.refresh === 'function') {
                 ScrollSmoother.refresh(true);
               }
-            };
+            }) as EventListener;
 
             window.addEventListener("resize", resizeHandler);
-
-            // Return cleanup function
-            return () => {
-              const links = document.querySelectorAll(".header ul a");
-              links.forEach((elem) => {
-                elem.removeEventListener("click", clickHandler as EventListener);
-              });
-              window.removeEventListener("resize", resizeHandler);
-            };
           }
         } catch (error) {
           console.error("Error initializing ScrollSmoother:", error);
@@ -137,11 +139,20 @@ const Navbar = () => {
       }
     };
 
-    const cleanup = initScrollSmoother();
+    // Initialize ScrollSmoother
+    initScrollSmoother();
 
     // Cleanup function
     return () => {
-      if (cleanup) cleanup();
+      // Remove click handlers
+      clickHandlers.forEach((handler, element) => {
+        element.removeEventListener("click", handler);
+      });
+
+      // Remove resize handler
+      if (resizeHandler) {
+        window.removeEventListener("resize", resizeHandler);
+      }
     };
   }, []);
   return (

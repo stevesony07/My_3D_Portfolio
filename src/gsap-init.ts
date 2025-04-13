@@ -11,13 +11,20 @@ if (import.meta.env.VITE_GSAP_TOKEN) {
       // This is where the token is applied
       gsap.set("body", { opacity: 1 });
       gsap.defaults({ overwrite: "auto" });
-      gsap.config({
+
+      // Configure GSAP with basic settings
+      const config: any = {
         autoSleep: 60,
         force3D: true,
         nullTargetWarn: false,
-        trialWarn: false, // Now properly typed
         units: { left: "%", top: "%", rotation: "rad" }
-      });
+      };
+
+      // Add trialWarn property separately to avoid TypeScript errors
+      config.trialWarn = false;
+
+      // Apply the configuration
+      gsap.config(config);
     },
     init() {
       return true;
