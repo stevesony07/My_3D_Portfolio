@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { ScrollTrigger } from "@gsap/member/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setCharTimeline, setAllTimeline } from "../../utils/GsapScroll";
 
 export default function handleResize(
@@ -16,7 +16,7 @@ export default function handleResize(
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   const workTrigger = ScrollTrigger.getById("work");
-  ScrollTrigger.getAll().forEach((trigger) => {
+  ScrollTrigger.getAll().forEach((trigger: any) => {
     if (trigger != workTrigger) {
       trigger.kill();
     }
