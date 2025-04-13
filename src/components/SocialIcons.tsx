@@ -4,7 +4,7 @@ import {
 } from "react-icons/fa6";
 import { FaGlobe } from "react-icons/fa";
 import "./styles/SocialIcons.css";
-import { TbNotes } from "react-icons/tb";
+// Removed unused import: import { TbNotes } from "react-icons/tb";
 import { useEffect } from "react";
 import HoverLinks from "./HoverLinks";
 
