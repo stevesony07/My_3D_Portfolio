@@ -8,23 +8,22 @@ const Contact = () => {
         <h3>Contact</h3>
         <div className="contact-flex">
           <div className="contact-box">
-            <h4>Email</h4>
+            <h4>stevesony07@gmail.com</h4>
             <p>
-              <a href="mailto:example@mail.com" data-cursor="disable">
-                abc@gmail.com
+              <a href="mailto:stevesony07@gmail.com" data-cursor="disable">
+                Contact Me
               </a>
             </p>
-            <h4>Phone</h4>
+            <h4>Education</h4>
             <p>
-              <a href="tel:+919920782622" data-cursor="disable">
-                +91 9988776655
-              </a>
+              B.Tech in AI & Data Science<br />
+              2024 - 2028
             </p>
           </div>
           <div className="contact-box">
             <h4>Social</h4>
             <a
-              href="https://github.com"
+              href="https://github.com/stevesony07"
               target="_blank"
               data-cursor="disable"
               className="contact-social"
@@ -32,7 +31,7 @@ const Contact = () => {
               Github <MdArrowOutward />
             </a>
             <a
-              href="https://www.linkedin.com"
+              href="https://www.linkedin.com/in/steve-sony-9929b2139/"
               target="_blank"
               data-cursor="disable"
               className="contact-social"
@@ -40,25 +39,17 @@ const Contact = () => {
               Linkedin <MdArrowOutward />
             </a>
             <a
-              href="https://x.com"
+              href="https://agenticnex.com"
               target="_blank"
               data-cursor="disable"
               className="contact-social"
             >
-              Twitter <MdArrowOutward />
-            </a>
-            <a
-              href="https://www.instagram.com"
-              target="_blank"
-              data-cursor="disable"
-              className="contact-social"
-            >
-              Instagram <MdArrowOutward />
+              AgenticNex <MdArrowOutward />
             </a>
           </div>
           <div className="contact-box">
             <h2>
-              Designed and Developed <br /> by <span>Kabir Singh</span>
+              Designed and Developed <br /> by <span>Steve Sony</span>
             </h2>
             <h5>
               <MdCopyright /> 2025

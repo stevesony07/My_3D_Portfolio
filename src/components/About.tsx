@@ -6,9 +6,7 @@ const About = () => {
       <div className="about-me">
         <h3 className="title">About Me</h3>
         <p className="para">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic quis
-          dolores numquam iusto Ratione earum ducimus autem id iure pariatur
-          dolorum quae maiores.
+          I'm Steve Sony, an 18-year-old B.Tech student in Artificial Intelligence & Data Science and founder of AgenticNex. I'm passionate about building AI-driven solutions that transform industries, from autonomous software development to real-time analytics.
         </p>
       </div>
     </div>

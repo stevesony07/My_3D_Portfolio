@@ -96,6 +96,7 @@
   left: 50%;
   transform: translate(-50%, 100%) scale(1.4);
   opacity: 0;
+  display: none !important; /* Hide the purple circle completely */
 }
 .character-model {
   height: 80%;
@@ -180,7 +181,7 @@
 }
 
 /* .landing-intro h1 span {
-   font-weight: 200; 
+   font-weight: 200;
 } */
 
 .landing-info {

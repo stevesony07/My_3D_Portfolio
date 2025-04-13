@@ -8,6 +8,13 @@
   height: auto;
   width: var(--cWidth);
   margin: auto;
+  z-index: 10;
+}
+
+/* Hide the purple circle that appears in the About section */
+.about-section ~ .character-rim,
+.about-section ~ .character-container .character-rim {
+  display: none !important;
 }
 .about-me {
   padding: 50px 0px;
@@ -28,6 +35,7 @@
   font-weight: 600;
   line-height: 36px;
   letter-spacing: 1px;
+  margin-bottom: 0;
 }
 
 @media only screen and (min-width: 600px) {

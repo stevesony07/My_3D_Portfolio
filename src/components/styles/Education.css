@@ -1,0 +1,158 @@
+.education-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  place-items: center;
+  justify-content: center;
+  position: relative;
+  opacity: 1;
+  height: auto;
+  margin: auto;
+  margin-bottom: 150px;
+  padding: 120px 0px;
+}
+
+.education-section h2 {
+  font-size: 70px;
+  line-height: 70px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 90px;
+}
+
+.education-section h2 > span {
+  color: var(--accentColor);
+}
+
+.education-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.education-box {
+  background-color: rgba(30, 30, 30, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 30px;
+  transition: all 0.3s ease;
+}
+
+.education-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-color: var(--accentColor);
+}
+
+.education-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.education-header h3 {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.education-year {
+  font-size: 18px;
+  color: var(--accentColor);
+  font-weight: 500;
+}
+
+.education-box h4 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0 0 10px 0;
+  opacity: 0.8;
+}
+
+.education-box p {
+  font-size: 16px;
+  margin: 0 0 20px 0;
+  opacity: 0.7;
+}
+
+.education-courses h5 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 10px 0;
+}
+
+.education-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.education-tags span {
+  background-color: rgba(127, 64, 255, 0.2);
+  border: 1px solid rgba(127, 64, 255, 0.5);
+  border-radius: 20px;
+  padding: 5px 15px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.education-tags span:hover {
+  background-color: rgba(127, 64, 255, 0.4);
+}
+
+.achievements-list {
+  padding-left: 20px;
+}
+
+.achievements-list li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media only screen and (max-width: 900px) {
+  .education-container {
+    width: calc(100% - 25px);
+  }
+  
+  .education-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .education-year {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .education-section h2 {
+    width: 100%;
+    font-size: 45px;
+    line-height: 45px;
+    margin-top: 0px;
+  }
+  
+  .education-box {
+    padding: 20px;
+  }
+  
+  .education-header h3 {
+    font-size: 20px;
+  }
+  
+  .education-section {
+    padding-top: 90px;
+    margin-top: -70px;
+    align-items: start;
+    place-items: inherit;
+    justify-content: left;
+  }
+}

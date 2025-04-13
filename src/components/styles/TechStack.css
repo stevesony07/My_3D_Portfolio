@@ -1,0 +1,42 @@
+.techstack {
+  position: relative;
+  height: 100vh;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  padding-top: 50px;
+}
+
+.techstack h2 {
+  font-size: 70px;
+  font-weight: 500;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.tech-canvas {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media only screen and (max-width: 1400px) {
+  .techstack h2 {
+    font-size: 50px;
+  }
+}
+
+@media only screen and (max-height: 900px) {
+  .techstack h2 {
+    font-size: 60px;
+    margin-bottom: 30px;
+  }
+}
+
+@media only screen and (max-height: 650px) {
+  .techstack h2 {
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+}
