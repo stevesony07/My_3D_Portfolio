@@ -1,11 +1,13 @@
 // Type definitions for GSAP plugins
 import { gsap } from 'gsap';
 
-// Extend the GSAPConfig interface to include trialWarn
-declare module 'gsap/index' {
-  interface GSAPConfig {
-    trialWarn?: boolean;
-  }
+// Instead of trying to augment the module, we'll create our own interface
+export interface ExtendedGSAPConfig {
+  autoSleep?: number;
+  force3D?: boolean;
+  nullTargetWarn?: boolean;
+  units?: { [key: string]: string };
+  trialWarn?: boolean;
 }
 
 // ScrollSmoother type definition

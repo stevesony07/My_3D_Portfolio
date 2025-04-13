@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
 import "./styles/Navbar.css";
-import { ScrollSmootherInstance, ScrollSmootherStatic } from "../types/gsap-types";
+import { ScrollSmootherInstance, ScrollSmootherStatic, ExtendedGSAPConfig } from "../types/gsap-types";
 
 // Import ScrollTrigger and ScrollSmoother
 let ScrollTrigger: any;
@@ -12,19 +12,17 @@ let ScrollSmoother: ScrollSmootherStatic;
 const initGSAP = () => {
   // Check if we're in a browser environment
   if (typeof window !== 'undefined' && import.meta.env.VITE_GSAP_TOKEN) {
-    // Configure GSAP with basic settings
-    const config: any = {
+    // Configure GSAP with our extended config
+    const config: ExtendedGSAPConfig = {
       autoSleep: 60,
       force3D: true,
       nullTargetWarn: false,
-      units: { left: "%", top: "%", rotation: "rad" }
+      units: { left: "%", top: "%", rotation: "rad" },
+      trialWarn: false
     };
 
-    // Add trialWarn property separately to avoid TypeScript errors
-    config.trialWarn = false;
-
     // Apply the configuration
-    gsap.config(config);
+    gsap.config(config as any);
 
     // Custom registerPlugin function
     const originalRegisterPlugin = gsap.registerPlugin;

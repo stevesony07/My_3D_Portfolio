@@ -1,6 +1,6 @@
 import { gsap } from "gsap";
-// Import the extended GSAPConfig type
-import "./types/gsap-types";
+// Import our custom ExtendedGSAPConfig interface
+import { ExtendedGSAPConfig } from "./types/gsap-types";
 
 // Initialize GSAP with your token
 if (import.meta.env.VITE_GSAP_TOKEN) {
@@ -12,19 +12,17 @@ if (import.meta.env.VITE_GSAP_TOKEN) {
       gsap.set("body", { opacity: 1 });
       gsap.defaults({ overwrite: "auto" });
 
-      // Configure GSAP with basic settings
-      const config: any = {
+      // Configure GSAP with our extended config
+      const config: ExtendedGSAPConfig = {
         autoSleep: 60,
         force3D: true,
         nullTargetWarn: false,
-        units: { left: "%", top: "%", rotation: "rad" }
+        units: { left: "%", top: "%", rotation: "rad" },
+        trialWarn: false
       };
 
-      // Add trialWarn property separately to avoid TypeScript errors
-      config.trialWarn = false;
-
       // Apply the configuration
-      gsap.config(config);
+      gsap.config(config as any);
     },
     init() {
       return true;
