@@ -1,5 +1,5 @@
 // Type definitions for GSAP plugins
-import { gsap } from 'gsap';
+import { gsap } from '@gsap/member';
 
 // Instead of trying to augment the module, we'll create our own interface
 export interface ExtendedGSAPConfig {
@@ -30,6 +30,7 @@ export interface ScrollSmootherOptions {
   effects?: boolean;
   autoResize?: boolean;
   ignoreMobileResize?: boolean;
+  smoothTouch?: number; // Added for touch device support
 }
 
 // Extend the gsap namespace
