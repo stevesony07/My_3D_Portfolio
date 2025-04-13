@@ -1,11 +1,11 @@
 import "./styles/Work.css";
 import WorkImage from "./WorkImage";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "../gsap-plugins";
 import { useGSAP } from "@gsap/react";
 
-// Register both plugins together
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+// Register useGSAP plugin
+gsap.registerPlugin(useGSAP);
 
 const Work = () => {
   useGSAP(() => {

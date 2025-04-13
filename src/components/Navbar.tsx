@@ -4,9 +4,11 @@ import { gsap } from "gsap";
 import "./styles/Navbar.css";
 import { ScrollSmootherInstance, ScrollSmootherStatic, ExtendedGSAPConfig } from "../types/gsap-types";
 
-// Import ScrollTrigger and ScrollSmoother
-let ScrollTrigger: any;
-let ScrollSmoother: ScrollSmootherStatic;
+// Import ScrollTrigger and ScrollSmoother from our centralized plugins file
+import { ScrollTrigger, ScrollSmoother as ScrollSmootherPlugin } from "../gsap-plugins";
+
+// Initialize ScrollSmoother with the correct type
+let ScrollSmoother: ScrollSmootherStatic = ScrollSmootherPlugin as unknown as ScrollSmootherStatic;
 
 // Initialize GSAP with token
 const initGSAP = () => {
@@ -41,19 +43,7 @@ const initGSAP = () => {
       return gsap;
     };
 
-    // Import the plugins dynamically
-    Promise.all([
-      import("gsap/ScrollTrigger"),
-      import("gsap/ScrollSmoother")
-    ]).then(([triggerModule, smootherModule]) => {
-      ScrollTrigger = triggerModule.ScrollTrigger;
-      ScrollSmoother = smootherModule.ScrollSmoother as ScrollSmootherStatic;
-
-      // Register both plugins together
-      gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-    }).catch(error => {
-      console.error("Error loading GSAP plugins:", error);
-    });
+    // Plugins are already imported and registered in gsap-plugins.ts
   }
 };
 
