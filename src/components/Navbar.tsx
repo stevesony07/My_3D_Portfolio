@@ -1,56 +1,117 @@
 import { useEffect } from "react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
 import "./styles/Navbar.css";
 
-// Register the GSAP token
-gsap.registerPlugin(ScrollTrigger);
+// Import ScrollTrigger and ScrollSmoother
+let ScrollTrigger, ScrollSmoother;
 
-// Only register ScrollSmoother if we have a token
-if (import.meta.env.VITE_GSAP_TOKEN) {
-  gsap.registerPlugin(ScrollSmoother);
-  gsap.config({
-    autoSleep: 60,
-    force3D: true,
-    nullTargetWarn: false,
-    trialWarn: false,
-    units: { left: "%", top: "%", rotation: "rad" }
-  });
+// Check if we're in a browser environment
+if (typeof window !== 'undefined') {
+  // Set up GSAP with the token
+  if (import.meta.env.VITE_GSAP_TOKEN) {
+    gsap.registerPlugin = (plugin, ...others) => {
+      // Add the plugin to the registered plugins
+      gsap.constructor.plugins[plugin.name] = plugin;
+      // Call the plugin's register function
+      plugin.register();
+      // Register any other plugins
+      others.forEach(p => gsap.registerPlugin(p));
+      return gsap;
+    };
+
+    // Configure GSAP
+    gsap.config({
+      autoSleep: 60,
+      force3D: true,
+      nullTargetWarn: false,
+      trialWarn: false,
+      units: { left: "%", top: "%", rotation: "rad" }
+    });
+
+    // Import the plugins dynamically
+    import("gsap/ScrollTrigger").then(module => {
+      ScrollTrigger = module.ScrollTrigger;
+      gsap.registerPlugin(ScrollTrigger);
+    });
+
+    import("gsap-trial/ScrollSmoother").then(module => {
+      ScrollSmoother = module.ScrollSmoother;
+      gsap.registerPlugin(ScrollSmoother);
+    });
+  }
 }
 export let smoother: ScrollSmoother;
 
 const Navbar = () => {
   useEffect(() => {
-    smoother = ScrollSmoother.create({
-      wrapper: "#smooth-wrapper",
-      content: "#smooth-content",
-      smooth: 1.7,
-      speed: 1.7,
-      effects: true,
-      autoResize: true,
-      ignoreMobileResize: true,
-    });
+    // Wait for ScrollSmoother to be loaded
+    const initScrollSmoother = async () => {
+      // Make sure we're in a browser and have the token
+      if (typeof window !== 'undefined' && import.meta.env.VITE_GSAP_TOKEN) {
+        try {
+          // Wait for ScrollSmoother to be imported
+          await new Promise(resolve => {
+            const checkSmoother = () => {
+              if (ScrollSmoother) {
+                resolve(true);
+              } else {
+                setTimeout(checkSmoother, 100);
+              }
+            };
+            checkSmoother();
+          });
 
-    smoother.scrollTop(0);
-    smoother.paused(true);
+          // Create the smoother instance
+          smoother = ScrollSmoother.create({
+            wrapper: "#smooth-wrapper",
+            content: "#smooth-content",
+            smooth: 1.7,
+            speed: 1.7,
+            effects: true,
+            autoResize: true,
+            ignoreMobileResize: true,
+          });
 
-    let links = document.querySelectorAll(".header ul a");
-    links.forEach((elem) => {
-      let element = elem as HTMLAnchorElement;
-      element.addEventListener("click", (e) => {
-        if (window.innerWidth > 1024) {
-          e.preventDefault();
-          let elem = e.currentTarget as HTMLAnchorElement;
-          let section = elem.getAttribute("data-href");
-          smoother.scrollTo(section, true, "top top");
+          smoother.scrollTop(0);
+          smoother.paused(true);
+
+          // Set up click handlers
+          let links = document.querySelectorAll(".header ul a");
+          links.forEach((elem) => {
+            let element = elem as HTMLAnchorElement;
+            element.addEventListener("click", (e) => {
+              if (window.innerWidth > 1024) {
+                e.preventDefault();
+                let elem = e.currentTarget as HTMLAnchorElement;
+                let section = elem.getAttribute("data-href");
+                smoother.scrollTo(section, true, "top top");
+              }
+            });
+          });
+
+          // Set up resize handler
+          window.addEventListener("resize", () => {
+            if (ScrollSmoother) {
+              ScrollSmoother.refresh(true);
+            }
+          });
+        } catch (error) {
+          console.error("Error initializing ScrollSmoother:", error);
         }
+      }
+    };
+
+    initScrollSmoother();
+
+    // Cleanup function
+    return () => {
+      const links = document.querySelectorAll(".header ul a");
+      links.forEach((elem) => {
+        elem.removeEventListener("click", () => {});
       });
-    });
-    window.addEventListener("resize", () => {
-      ScrollSmoother.refresh(true);
-    });
+      window.removeEventListener("resize", () => {});
+    };
   }, []);
   return (
     <>
