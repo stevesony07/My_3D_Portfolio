@@ -2,10 +2,23 @@ import { useEffect } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
-import { ScrollSmoother } from "gsap-trial/ScrollSmoother";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 import "./styles/Navbar.css";
 
-gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
+// Register the GSAP token
+gsap.registerPlugin(ScrollTrigger);
+
+// Only register ScrollSmoother if we have a token
+if (import.meta.env.VITE_GSAP_TOKEN) {
+  gsap.registerPlugin(ScrollSmoother);
+  gsap.config({
+    autoSleep: 60,
+    force3D: true,
+    nullTargetWarn: false,
+    trialWarn: false,
+    units: { left: "%", top: "%", rotation: "rad" }
+  });
+}
 export let smoother: ScrollSmoother;
 
 const Navbar = () => {
