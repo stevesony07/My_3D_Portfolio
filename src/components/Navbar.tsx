@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import HoverLinks from "./HoverLinks";
-import { gsap } from "gsap";
+import { gsap } from "@gsap/member";
 import "./styles/Navbar.css";
 import { ScrollSmootherInstance, ScrollSmootherStatic, ExtendedGSAPConfig } from "../types/gsap-types";
 
@@ -43,15 +43,14 @@ const initGSAP = () => {
 
     // Import the plugins dynamically
     Promise.all([
-      import("gsap/ScrollTrigger"),
-      import("gsap-trial/ScrollSmoother")
+      import("@gsap/member/ScrollTrigger"),
+      import("@gsap/member/ScrollSmoother")
     ]).then(([triggerModule, smootherModule]) => {
       ScrollTrigger = triggerModule.ScrollTrigger;
       ScrollSmoother = smootherModule.ScrollSmoother as ScrollSmootherStatic;
 
-      // Register plugins
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.registerPlugin(ScrollSmoother);
+      // Register both plugins together
+      gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
     }).catch(error => {
       console.error("Error loading GSAP plugins:", error);
     });
@@ -92,11 +91,9 @@ const Navbar = () => {
             smoother = ScrollSmoother.create({
               wrapper: "#smooth-wrapper",
               content: "#smooth-content",
-              smooth: 1.7,
-              speed: 1.7,
-              effects: true,
-              autoResize: true,
-              ignoreMobileResize: true,
+              smooth: 1, // How long (in seconds) it takes to "catch up" to the native scroll position
+              effects: true, // Looks for data-speed and data-lag attributes on elements
+              smoothTouch: 0.1, // Much shorter smoothing time on touch devices (default: 0)
             });
 
             smoother.scrollTop(0);

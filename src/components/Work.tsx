@@ -1,10 +1,11 @@
 import "./styles/Work.css";
 import WorkImage from "./WorkImage";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import gsap from "@gsap/member";
+import { ScrollTrigger } from "@gsap/member/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(useGSAP);
+// Register both plugins together
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Work = () => {
   useGSAP(() => {
@@ -40,7 +41,7 @@ const Work = () => {
 
     timeline.to(".work-flex", {
       x: -translateX,
-      duration: 60, // Increased from 40 to 60 to make it a bit slower
+      duration: 120, // Increased from 80 to 120 to make it much slower
       delay: 0.2,
     });
   }, []);

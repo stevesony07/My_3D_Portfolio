@@ -1,6 +1,9 @@
-import { SplitText } from "gsap-trial/SplitText";
-import gsap from "gsap";
+import { SplitText } from "@gsap/member/SplitText";
+import gsap from "@gsap/member";
 import { smoother } from "../Navbar";
+
+// Register SplitText plugin
+gsap.registerPlugin(SplitText);
 
 export function initialFX() {
   document.body.style.overflowY = "auto";

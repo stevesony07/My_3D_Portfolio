@@ -1,13 +1,14 @@
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollSmoother } from "gsap-trial/ScrollSmoother";
-import { SplitText } from "gsap-trial/SplitText";
+import { gsap } from "@gsap/member";
+import { ScrollTrigger } from "@gsap/member/ScrollTrigger";
+import { ScrollSmoother } from "@gsap/member/ScrollSmoother";
+import { SplitText } from "@gsap/member/SplitText";
 
 interface ParaElement extends HTMLElement {
   anim?: gsap.core.Animation;
   split?: SplitText;
 }
 
+// Register all plugins together
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
 
 export default function setSplitText() {

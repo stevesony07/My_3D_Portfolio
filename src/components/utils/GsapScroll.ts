@@ -1,5 +1,9 @@
 import * as THREE from "three";
-import gsap from "gsap";
+import gsap from "@gsap/member";
+import { ScrollTrigger } from "@gsap/member/ScrollTrigger";
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
