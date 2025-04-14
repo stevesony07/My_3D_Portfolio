@@ -19,7 +19,11 @@ export default defineConfig(({ mode }) => {
       terserOptions: {
         compress: {
           // Preserve console.logs for debugging
-          drop_console: false
+          drop_console: false,
+          passes: 2
+        },
+        format: {
+          comments: false
         }
       },
       // Ensure we don't try to resolve GSAP plugins during build
