@@ -1,69 +1,117 @@
-import gsap from 'gsap';
+// Import types from gsap-types.ts
+import { ScrollSmootherInstance } from './types/gsap-types';
 
-// Create mock plugins for build process
-const ScrollTrigger = {
-  getById: (id: string) => null,
-  getAll: () => [],
-  refresh: (force?: boolean) => {},
-  config: (options: any) => {},
-  create: (options: any) => ({}),
-  isTouch: false
-};
+// Add type declarations for GSAP plugins on window
+declare global {
+  interface Window {
+    ScrollTrigger: any;
+    ScrollSmoother: any;
+    SplitText: any;
+  }
+}
 
-const ScrollSmoother = {
-  create: (options: any) => ({
-    scrollTop: (position: number) => {},
-    paused: (paused: boolean) => {},
-    scrollTo: (target: string | Element, smooth?: boolean, position?: string) => {}
-  }),
-  refresh: (force?: boolean) => {}
-};
+// Define interfaces for GSAP plugins for better type safety
+interface ScrollTriggerType {
+  getById: (id: string) => any;
+  getAll: () => any[];
+  refresh: (force?: boolean) => void;
+  config: (options: any) => void;
+  create: (options: any) => any;
+  isTouch: boolean;
+}
 
-const SplitText = function(target: any, options: any) {
-  this.chars = [];
-  this.words = [];
-  this.lines = [];
-  this.revert = () => {};
-};
+// Use the imported ScrollSmootherInstance type
+interface ScrollSmootherType {
+  create: (options: any) => ScrollSmootherInstance;
+  refresh: (force?: boolean) => void;
+}
 
-// Only register plugins in browser environment
-if (typeof window !== 'undefined') {
-  // Dynamically load GSAP plugins
-  const loadGSAPPlugins = async () => {
-    try {
-      // Use dynamic imports to load GSAP plugins
-      const gsapCore = await import('gsap');
-
-      // Load ScrollTrigger
-      try {
-        const { ScrollTrigger: ST } = await import('gsap/ScrollTrigger');
-        gsapCore.gsap.registerPlugin(ST);
-      } catch (e) {
-        console.warn('ScrollTrigger not available:', e);
-      }
-
-      // Load ScrollSmoother
-      try {
-        const { ScrollSmoother: SS } = await import('gsap/ScrollSmoother');
-        gsapCore.gsap.registerPlugin(SS);
-      } catch (e) {
-        console.warn('ScrollSmoother not available:', e);
-      }
-
-      // Load SplitText
-      try {
-        const { SplitText: SText } = await import('gsap/SplitText');
-        gsapCore.gsap.registerPlugin(SText);
-      } catch (e) {
-        console.warn('SplitText not available:', e);
-      }
-    } catch (error) {
-      console.error('Error loading GSAP plugins:', error);
-    }
+interface SplitTextType {
+  new (target: any, options: any): {
+    chars: any[];
+    words: any[];
+    lines: any[];
+    revert: () => void;
   };
+}
 
-  // Load plugins
-  loadGSAPPlugins();
+// Create mock implementations for SSR and fallbacks
+class MockSplitText {
+  chars: any[] = [];
+  words: any[] = [];
+  lines: any[] = [];
+
+  constructor(_target: any, _options: any) {}
+
+  revert(): void {}
+}
+
+const createMockScrollTrigger = (): ScrollTriggerType => ({
+  getById: (_id: string) => null,
+  getAll: () => [],
+  refresh: (_force?: boolean) => {},
+  config: (_options: any) => {},
+  create: (_options: any) => ({}),
+  isTouch: false
+});
+
+const createMockScrollSmoother = (): ScrollSmootherType => ({
+  create: (_options: any): ScrollSmootherInstance => ({
+    scrollTop: (_position: number) => {},
+    paused: (_paused: boolean) => {},
+    scrollTo: (_target: string | Element, _smooth?: boolean, _position?: string) => {}
+  }),
+  refresh: (_force?: boolean) => {}
+});
+
+// Declare variables to hold the plugins
+let ScrollTrigger: ScrollTriggerType;
+let ScrollSmoother: ScrollSmootherType;
+let SplitText: SplitTextType;
+
+// Initialize plugins based on environment
+if (typeof window !== 'undefined') {
+  try {
+    // Try to access the global plugins loaded from CDN
+    // @ts-ignore - These are loaded from CDN in index.html
+    if (window.ScrollTrigger) {
+      ScrollTrigger = window.ScrollTrigger;
+      console.log('ScrollTrigger loaded from CDN');
+    } else {
+      ScrollTrigger = createMockScrollTrigger();
+      console.warn('ScrollTrigger not found, using mock');
+    }
+
+    // @ts-ignore
+    if (window.ScrollSmoother) {
+      ScrollSmoother = window.ScrollSmoother;
+      console.log('ScrollSmoother loaded from CDN');
+    } else {
+      ScrollSmoother = createMockScrollSmoother();
+      console.warn('ScrollSmoother not found, using mock');
+    }
+
+    // @ts-ignore
+    if (window.SplitText) {
+      SplitText = window.SplitText;
+      console.log('SplitText loaded from CDN');
+    } else {
+      SplitText = MockSplitText as unknown as SplitTextType;
+      console.warn('SplitText not found, using mock');
+    }
+  } catch (error) {
+    console.error('Error initializing GSAP plugins:', error);
+
+    // Fallback to mock implementations
+    ScrollTrigger = createMockScrollTrigger();
+    ScrollSmoother = createMockScrollSmoother();
+    SplitText = MockSplitText as unknown as SplitTextType;
+  }
+} else {
+  // Server-side rendering - use mock implementations
+  ScrollTrigger = createMockScrollTrigger();
+  ScrollSmoother = createMockScrollSmoother();
+  SplitText = MockSplitText as unknown as SplitTextType;
 }
 
 export { ScrollTrigger, ScrollSmoother, SplitText };

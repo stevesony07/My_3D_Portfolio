@@ -5,6 +5,35 @@
     <link rel="icon" type="image/png" href="/1742061190548.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Steve Sony - Founder of AgenticNex</title>
+    <!-- Load GSAP from CDN with Club plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollSmoother.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/SplitText.min.js"></script>
+    <script>
+      // Initialize GSAP plugins when the page loads
+      window.addEventListener('DOMContentLoaded', function() {
+        // Register plugins with GSAP
+        if (window.gsap) {
+          try {
+            // Check if plugins are available
+            if (window.ScrollTrigger && window.ScrollSmoother && window.SplitText) {
+              window.gsap.registerPlugin(window.ScrollTrigger, window.ScrollSmoother, window.SplitText);
+              console.log('GSAP plugins registered successfully');
+            } else {
+              console.warn('Some GSAP plugins are missing:',
+                !window.ScrollTrigger ? 'ScrollTrigger' : '',
+                !window.ScrollSmoother ? 'ScrollSmoother' : '',
+                !window.SplitText ? 'SplitText' : '');
+            }
+          } catch (error) {
+            console.error('Error registering GSAP plugins:', error);
+          }
+        } else {
+          console.error('GSAP not loaded properly');
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

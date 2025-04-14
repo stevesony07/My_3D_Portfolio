@@ -4,7 +4,7 @@ This repository contains the open source version of my 3D portfolio website. Do 
 
 ## Instructions 🛠️
 
-I have modified the GSAP club plugins with the trial plugins, but with the trial plugin, you cannot host it⛔️. For Club plugins, check out here: [GSAP Installation](https://gsap.com/docs/v3/Installation/).
+This project uses GSAP Club plugins which require a valid GSAP Club membership. You'll need to set up your GSAP Club token to build and deploy this project. For more information, check out: [GSAP Installation](https://gsap.com/docs/v3/Installation/).
 
 **Techstack** - React, TypeScript, GSAP, ThreeJS, WebGL, HTML, CSS, JavaScript
 
@@ -49,7 +49,67 @@ I have modified the GSAP club plugins with the trial plugins, but with the trial
    npm run dev
    ```
 
-Open your browser and navigate to `http://localhost:3000` to view the website.
+Open your browser and navigate to `http://localhost:5173` to view the website.
+
+### GSAP Setup
+
+This project uses GSAP plugins with ScrollSmoother for smooth scrolling effects. The setup includes:
+
+1. **CDN Loading**: GSAP plugins are loaded from CDN in `index.html`
+2. **Plugin Registration**: Plugins are registered with GSAP in the browser
+3. **ScrollSmoother Initialization**: ScrollSmoother is initialized in `Navbar.tsx`
+
+#### Troubleshooting ScrollSmoother
+
+If you encounter issues with ScrollSmoother:
+
+1. Check the browser console for errors related to GSAP plugins
+2. Verify that the CDN links in `index.html` are accessible
+3. Make sure the DOM elements with IDs `smooth-wrapper` and `smooth-content` exist in your HTML
+4. If using GSAP Club plugins, ensure your GSAP token is correctly set in `.env`:
+
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your GSAP Club token
+   ```
+
+### Deploying to Vercel
+
+1. Push your code to GitHub:
+
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push
+   ```
+
+2. Connect your GitHub repository to Vercel.
+
+3. If using GSAP Club plugins, add your GSAP token as an environment variable in Vercel:
+   - Go to your project settings in Vercel
+   - Navigate to the "Environment Variables" section
+   - Add `GSAP_TOKEN` with your GSAP Club token value
+
+4. Deploy your project.
+
+### Troubleshooting Deployment
+
+If you encounter issues during deployment:
+
+1. **GSAP Plugin Issues**:
+   - Check that the CDN links in `index.html` are accessible and not blocked
+   - Verify that the GSAP plugins are being loaded correctly by checking the browser console
+   - If animations aren't working, try clearing your browser cache and reloading the page
+
+2. **Build Errors**:
+   - Check Vercel build logs for any errors related to GSAP plugins
+   - Verify that the `vite.config.ts` file is correctly configured
+   - Make sure all dependencies are properly installed
+
+3. **ScrollSmoother Issues**:
+   - Check if ScrollSmoother is properly initialized in the browser console
+   - Verify that the DOM structure matches what ScrollSmoother expects
+   - Try disabling ScrollSmoother temporarily to see if that resolves the issue
 
 ## Features
 
@@ -70,5 +130,5 @@ Contributions are welcome! Please follow these steps:
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
- 
+
 

@@ -2,8 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-// Import GSAP initialization and plugins
-import "./gsap-init";
+// Import GSAP plugins
 import "./gsap-plugins";
 
 createRoot(document.getElementById("root")!).render(

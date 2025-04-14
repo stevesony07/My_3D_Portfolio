@@ -5,7 +5,7 @@ import "./styles/Navbar.css";
 import { ScrollSmootherInstance, ScrollSmootherStatic, ExtendedGSAPConfig } from "../types/gsap-types";
 
 // Import ScrollSmoother from our centralized plugins file
-import { ScrollSmoother } from "../gsap-plugins";
+import { ScrollSmoother } from "../gsap-club-plugins";
 
 // Initialize GSAP with token
 const initGSAP = () => {
@@ -57,24 +57,29 @@ const Navbar = () => {
     let resizeHandler: EventListener | null = null;
 
     // Wait for ScrollSmoother to be loaded
-    const initScrollSmoother = async () => {
-      // Make sure we're in a browser and have the token
-      if (typeof window !== 'undefined' && import.meta.env.VITE_GSAP_TOKEN) {
-        try {
-          // Wait for ScrollSmoother to be imported
-          await new Promise<boolean>(resolve => {
-            const checkSmoother = () => {
-              if (ScrollSmoother) {
-                resolve(true);
-              } else {
-                setTimeout(checkSmoother, 100);
-              }
-            };
-            checkSmoother();
-          });
+    const initScrollSmoother = () => {
+      // Make sure we're in a browser
+      if (typeof window === 'undefined') {
+        console.warn('ScrollSmoother initialization skipped - not in browser environment');
+        return;
+      }
 
-          // Create the smoother instance
+      try {
+        // Check if ScrollSmoother is available
+        if (!ScrollSmoother) {
+          throw new Error('ScrollSmoother plugin not available');
+        }
+
+        // Register ScrollSmoother plugin with GSAP if needed
+        if (window.gsap && !window.gsap._plugins?.ScrollSmoother) {
+          console.log('Registering ScrollSmoother with GSAP');
+          window.gsap.registerPlugin(ScrollSmoother);
+        }
+
+        // Create the smoother instance
+        try {
           if (ScrollSmoother && typeof ScrollSmoother.create === 'function') {
+            console.log('Creating ScrollSmoother instance');
             smoother = ScrollSmoother.create({
               wrapper: "#smooth-wrapper",
               content: "#smooth-content",
@@ -83,41 +88,72 @@ const Navbar = () => {
               smoothTouch: 0.1, // Much shorter smoothing time on touch devices (default: 0)
             });
 
+            console.log('ScrollSmoother instance created:', smoother);
             smoother.scrollTop(0);
             smoother.paused(true);
+          } else {
+            throw new Error('ScrollSmoother.create method not found');
+          }
 
-            // Set up click handlers
-            const links = document.querySelectorAll(".header ul a");
-            links.forEach((elem) => {
-              const element = elem as HTMLAnchorElement;
-              const handler = ((e: MouseEvent) => {
-                if (window.innerWidth > 1024) {
-                  e.preventDefault();
-                  const target = e.currentTarget as HTMLAnchorElement;
-                  const section = target.getAttribute("data-href");
-                  if (section) {
-                    smoother.scrollTo(section, true, "top top");
-                  }
+          // Set up click handlers
+          const links = document.querySelectorAll(".header ul a");
+          links.forEach((elem) => {
+            const element = elem as HTMLAnchorElement;
+            const handler = ((e: MouseEvent) => {
+              if (window.innerWidth > 1024) {
+                e.preventDefault();
+                const target = e.currentTarget as HTMLAnchorElement;
+                const section = target.getAttribute("data-href");
+                if (section) {
+                  smoother.scrollTo(section, true, "top top");
                 }
-              }) as EventListener;
-
-              // Store the handler for cleanup
-              clickHandlers.set(element, handler);
-              element.addEventListener("click", handler);
-            });
-
-            // Set up resize handler
-            resizeHandler = (() => {
-              if (ScrollSmoother && typeof ScrollSmoother.refresh === 'function') {
-                ScrollSmoother.refresh(true);
               }
             }) as EventListener;
 
-            window.addEventListener("resize", resizeHandler);
-          }
+            // Store the handler for cleanup
+            clickHandlers.set(element, handler);
+            element.addEventListener("click", handler);
+          });
+
+          // Set up resize handler
+          resizeHandler = (() => {
+            if (ScrollSmoother && typeof ScrollSmoother.refresh === 'function') {
+              ScrollSmoother.refresh(true);
+            }
+          }) as EventListener;
+
+          window.addEventListener("resize", resizeHandler);
         } catch (error) {
-          console.error("Error initializing ScrollSmoother:", error);
+          console.error("Error creating or using ScrollSmoother:", error);
+          // Create a mock smoother instance as fallback
+          smoother = {
+            scrollTop: (_position: number) => {},
+            paused: (_paused: boolean) => {},
+            scrollTo: (_target: string | Element, _smooth?: boolean, _position?: string) => {}
+          } as ScrollSmootherInstance;
+
+          // Set up basic click handlers without smooth scrolling
+          const links = document.querySelectorAll(".header ul a");
+          links.forEach((elem) => {
+            const element = elem as HTMLAnchorElement;
+            const handler = ((e: MouseEvent) => {
+              // Basic navigation without smooth scrolling
+              // We don't prevent default so the browser handles the navigation
+            }) as EventListener;
+
+            // Store the handler for cleanup
+            clickHandlers.set(element, handler);
+            element.addEventListener("click", handler);
+          });
         }
+      } catch (error) {
+        console.error("Error initializing ScrollSmoother:", error);
+        // Create a mock smoother instance
+        smoother = {
+          scrollTop: (_position: number) => {},
+          paused: (_paused: boolean) => {},
+          scrollTo: (_target: string | Element, _smooth?: boolean, _position?: string) => {}
+        } as ScrollSmootherInstance;
       }
     };
 

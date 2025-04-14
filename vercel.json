@@ -8,7 +8,5 @@
   "github": {
     "silent": true
   },
-  "env": {
-    "VITE_GSAP_TOKEN": "32eb6a7d-54a8-4f0a-a74d-5b191e06a4d1"
-  }
+  "buildCommand": "npm run build"
 }

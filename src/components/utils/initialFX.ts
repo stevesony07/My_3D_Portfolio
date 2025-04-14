@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { SplitText } from "../../gsap-plugins";
+import { SplitText } from "../../gsap-club-plugins";
 import { smoother } from "../Navbar";
 
 export function initialFX() {
