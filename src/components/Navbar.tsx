@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
 import "./styles/Navbar.css";
-import { ScrollSmootherInstance, ScrollSmootherStatic, ExtendedGSAPConfig } from "../types/gsap-types";
+import { ScrollSmootherInstance, ExtendedGSAPConfig } from "../types/gsap-types";
 
 // Import ScrollSmoother from our centralized plugins file
 import { ScrollSmoother } from "../gsap-club-plugins";
@@ -70,11 +70,9 @@ const Navbar = () => {
           throw new Error('ScrollSmoother plugin not available');
         }
 
-        // Register ScrollSmoother plugin with GSAP if needed
-        if (window.gsap && !window.gsap._plugins?.ScrollSmoother) {
-          console.log('Registering ScrollSmoother with GSAP');
-          window.gsap.registerPlugin(ScrollSmoother);
-        }
+        // Register ScrollSmoother plugin with GSAP
+        console.log('Registering ScrollSmoother with GSAP');
+        window.gsap.registerPlugin(ScrollSmoother);
 
         // Create the smoother instance
         try {
@@ -100,12 +98,23 @@ const Navbar = () => {
           links.forEach((elem) => {
             const element = elem as HTMLAnchorElement;
             const handler = ((e: MouseEvent) => {
-              if (window.innerWidth > 1024) {
-                e.preventDefault();
-                const target = e.currentTarget as HTMLAnchorElement;
-                const section = target.getAttribute("data-href");
-                if (section) {
-                  smoother.scrollTo(section, true, "top top");
+              e.preventDefault();
+              const target = e.currentTarget as HTMLAnchorElement;
+              const section = target.getAttribute("data-href");
+              if (section) {
+                // Get the section element
+                const sectionElement = document.querySelector(section);
+                if (sectionElement) {
+                  console.log(`Scrolling to section: ${section}`);
+                  // Use ScrollSmoother if available, otherwise fallback to standard scrolling
+                  if (smoother && typeof smoother.scrollTo === 'function') {
+                    smoother.scrollTo(section, true, "top top");
+                  } else {
+                    // Fallback to standard scrolling
+                    sectionElement.scrollIntoView({ behavior: 'smooth' });
+                  }
+                } else {
+                  console.warn(`Section not found: ${section}`);
                 }
               }
             }) as EventListener;
@@ -132,13 +141,25 @@ const Navbar = () => {
             scrollTo: (_target: string | Element, _smooth?: boolean, _position?: string) => {}
           } as ScrollSmootherInstance;
 
-          // Set up basic click handlers without smooth scrolling
+          // Set up basic click handlers with standard smooth scrolling
           const links = document.querySelectorAll(".header ul a");
           links.forEach((elem) => {
             const element = elem as HTMLAnchorElement;
             const handler = ((e: MouseEvent) => {
-              // Basic navigation without smooth scrolling
-              // We don't prevent default so the browser handles the navigation
+              e.preventDefault();
+              const target = e.currentTarget as HTMLAnchorElement;
+              const section = target.getAttribute("data-href");
+              if (section) {
+                // Get the section element
+                const sectionElement = document.querySelector(section);
+                if (sectionElement) {
+                  console.log(`Fallback scrolling to section: ${section}`);
+                  // Use standard smooth scrolling
+                  sectionElement.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  console.warn(`Section not found: ${section}`);
+                }
+              }
             }) as EventListener;
 
             // Store the handler for cleanup
@@ -154,6 +175,32 @@ const Navbar = () => {
           paused: (_paused: boolean) => {},
           scrollTo: (_target: string | Element, _smooth?: boolean, _position?: string) => {}
         } as ScrollSmootherInstance;
+
+        // Set up basic click handlers with standard smooth scrolling as a last resort
+        const links = document.querySelectorAll(".header ul a");
+        links.forEach((elem) => {
+          const element = elem as HTMLAnchorElement;
+          const handler = ((e: MouseEvent) => {
+            e.preventDefault();
+            const target = e.currentTarget as HTMLAnchorElement;
+            const section = target.getAttribute("data-href");
+            if (section) {
+              // Get the section element
+              const sectionElement = document.querySelector(section);
+              if (sectionElement) {
+                console.log(`Last resort scrolling to section: ${section}`);
+                // Use standard smooth scrolling
+                sectionElement.scrollIntoView({ behavior: 'smooth' });
+              } else {
+                console.warn(`Section not found: ${section}`);
+              }
+            }
+          }) as EventListener;
+
+          // Store the handler for cleanup
+          clickHandlers.set(element, handler);
+          element.addEventListener("click", handler);
+        });
       }
     };
 

@@ -33,6 +33,28 @@ export interface ScrollSmootherOptions {
   smoothTouch?: number; // Added for touch device support
 }
 
+// SplitText type definition
+export interface SplitText {
+  chars: any[];
+  words: any[];
+  lines: any[];
+  elements: any[];
+  selector: string | Element;
+  split: string;
+  revert: () => void;
+}
+
+// ScrollTrigger type definition
+export interface ScrollTriggerType {
+  getById: (id: string) => any;
+  getAll: () => any[];
+  refresh: (force?: boolean) => void;
+  config: (options: any) => void;
+  create: (options: any) => any;
+  isTouch: boolean;
+  addEventListener: (event: string, callback: () => void) => void;
+}
+
 // Extend the gsap namespace
 declare global {
   interface Window {
