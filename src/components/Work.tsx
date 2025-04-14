@@ -5,7 +5,9 @@ import { ScrollTrigger } from "../gsap-plugins";
 import { useGSAP } from "@gsap/react";
 
 // Register useGSAP plugin
-gsap.registerPlugin(useGSAP);
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(useGSAP);
+}
 
 const Work = () => {
   useGSAP(() => {

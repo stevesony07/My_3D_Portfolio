@@ -5,10 +5,7 @@ import "./styles/Navbar.css";
 import { ScrollSmootherInstance, ScrollSmootherStatic, ExtendedGSAPConfig } from "../types/gsap-types";
 
 // Import ScrollSmoother from our centralized plugins file
-import { ScrollSmoother as ScrollSmootherPlugin } from "../gsap-plugins";
-
-// Initialize ScrollSmoother with the correct type
-let ScrollSmoother: ScrollSmootherStatic = ScrollSmootherPlugin as unknown as ScrollSmootherStatic;
+import { ScrollSmoother } from "../gsap-plugins";
 
 // Initialize GSAP with token
 const initGSAP = () => {
